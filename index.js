@@ -58,12 +58,12 @@ const placar = {
   human: 0,
   computer: 0,
   draw: function () {
-  ctx.font = "bold 72px arial";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "top";
-  ctx.fillStyle = "#01341D";
-  ctx.fillText(this.human, window.innerWidth / 4, 50);
-  ctx.fillText(this.computer, window.innerWidth / 4 + window.innerWidth / 2, 50)
+    ctx.font = "bold 72px arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillStyle = "#01341D";
+    ctx.fillText(this.human, window.innerWidth / 4, 50);
+    ctx.fillText(this.computer, window.innerWidth / 4 + window.innerWidth / 2, 50)
   },
 };
 
@@ -71,11 +71,17 @@ const ball = {
   x: 100,
   y: 100,
   r: 22,
+  speed: 10,
+  _move: function () {
+    this.x += 1 * this.speed;
+    this.y += 1 * this.speed;
+  },
   draw: function () {
     ctx.fillStyle = "#ffffff";
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
     ctx.fill();
+    this._move();
   },
 };
 
@@ -95,5 +101,23 @@ function draw() {
   ball.draw();
 };
 
+window.animateFrame = (function () {
+  return (
+    window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function (callback) {
+      return window.setTimeout(callback, 1000 / 60)
+    }
+  )
+})();
+
+function main() {
+  animateFrame(main);
+  draw();
+}
+
 setup();
-draw();
+main();
